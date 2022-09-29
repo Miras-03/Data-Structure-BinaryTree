@@ -1,0 +1,200 @@
+#include <iostream>
+using namespace std;
+
+template<class T>
+class Node
+{
+public:
+	T value;
+	Node* left;
+	Node* right;
+};
+
+template<class T>
+class Tree {
+public:
+	Tree();
+	~Tree();
+
+	void Insert(T key);
+	Node<T>* Search(T key);
+	void DestroyTree();
+	void IncorderPrint();
+	void PostorderPrint();
+	void PreorderPrint();
+
+private:
+	void DestroyTree(Node<T>* leaf);
+	void Insert(T key, Node<T>* leaf);
+	Node<T>* Search(T key, Node<T>* leaf);
+	void IncorderPrint(Node<T>* leaf);
+	void PostorderPrint(Node<T>* leaf);
+	void PreorderPrint(Node<T>* leaf);
+
+	Node<T>* root;
+};
+
+template<class T>
+Tree<T>::Tree()
+{
+	root = nullptr;
+}
+
+template<class T>
+Tree<T>::~Tree()
+{
+	destroy_tree();
+}
+
+template<class T>
+void Tree<T>::DestroyTree(Node<T>* leaf)
+{
+	if (leaf != nullptr)
+	{
+		destroy_tree(leaf->left);
+		destroy_tree(leaf->right);
+		delete leaf;
+	}
+}
+
+template<class T>
+void Tree<T>::Insert(T key, Node<T>* leaf)
+{
+
+	if (key < leaf->value)
+	{
+		if (leaf->left != nullptr)
+			insert(key, leaf->left);
+		else
+		{
+			leaf->left = new Node<T>;
+			leaf->left->value = key;
+			leaf->left->left = nullptr;
+			leaf->left->right = nullptr;
+		}
+	}
+	else if (key >= leaf->value)
+	{
+		if (leaf->right != nullptr)
+			insert(key, leaf->right);
+		else
+		{
+			leaf->right = new Node<T>;
+			leaf->right->value = key;
+			leaf->right->right = nullptr;
+			leaf->right->left = nullptr;
+		}
+	}
+}
+
+template<class T>
+void Tree<T>::Insert(T key)
+{
+	if (root != nullptr)
+		insert(key, root);
+	else
+	{
+		root = new Node<T>;
+		root->value = key;
+		root->left = nullptr;
+		root->right = nullptr;
+	}
+}
+
+template<class T>
+Node<T>* Tree<T>::Search(T key, Node<T>* leaf)
+{
+	if (leaf != nullptr)
+	{
+		if (key == leaf->value)
+			cout << "Found!\n";
+		if (key < leaf->value)
+			return search(key, leaf->left);
+		else
+			return search(key, leaf->right);
+	}
+	else
+		return nullptr;
+}
+
+template<class T>
+Node<T>* Tree<T>::Search(T key)
+{
+	return search(key, root);
+}
+
+template<class T>
+void Tree<T>::DestroyTree()
+{
+	destroy_tree(root);
+}
+
+template<class T>
+void Tree<T>::IncorderPrint()
+{
+	inorder_print(root);
+	cout << "\n";
+}
+
+template<class T>
+void Tree<T>::IncorderPrint(Node<T>* leaf)
+{
+	if (leaf != nullptr)
+	{
+		inorder_print(leaf->left);
+		cout << leaf->value << ",";
+		inorder_print(leaf->right);
+	}
+}
+
+template<class T>
+void Tree<T>::PostorderPrint()
+{
+	postorder_print(root);
+	cout << "\n";
+}
+
+template<class T>
+void Tree<T>::PostorderPrint(Node<T>* leaf)
+{
+	if (leaf != nullptr)
+	{
+		inorder_print(leaf->left);
+		inorder_print(leaf->right);
+		cout << leaf->value << ",";
+	}
+}
+
+template<class T>
+void Tree<T>::PreorderPrint()
+{
+	preorder_print(root);
+	cout << "\n";
+}
+
+template<class T>
+void Tree<T>::PreorderPrint(Node<T>* leaf)
+{
+	if (leaf != nullptr)
+	{
+		cout << leaf->value << ",";
+		inorder_print(leaf->left);
+		inorder_print(leaf->right);
+	}
+}
+
+int main()
+{
+	Tree<string>* tree = new Tree<string>();
+
+	tree->Insert("Miras");
+	tree->Insert("Sarim");
+	tree->Insert("Apple");
+
+	cout << (int)tree->Search("Apple");
+	tree->PreorderPrint();
+	tree->IncorderPrint();
+	tree->PostorderPrint();
+
+	delete tree;
+}
