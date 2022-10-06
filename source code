@@ -43,7 +43,7 @@ Tree<T>::Tree()
 template<class T>
 Tree<T>::~Tree()
 {
-	destroy_tree();
+	DestroyTree();
 }
 
 template<class T>
@@ -51,8 +51,8 @@ void Tree<T>::DestroyTree(Node<T>* leaf)
 {
 	if (leaf != nullptr)
 	{
-		destroy_tree(leaf->left);
-		destroy_tree(leaf->right);
+		DestroyTree(leaf->left);
+		DestroyTree(leaf->right);
 		delete leaf;
 	}
 }
@@ -64,7 +64,7 @@ void Tree<T>::Insert(T key, Node<T>* leaf)
 	if (key < leaf->value)
 	{
 		if (leaf->left != nullptr)
-			insert(key, leaf->left);
+			Insert(key, leaf->left);
 		else
 		{
 			leaf->left = new Node<T>;
@@ -76,7 +76,7 @@ void Tree<T>::Insert(T key, Node<T>* leaf)
 	else if (key >= leaf->value)
 	{
 		if (leaf->right != nullptr)
-			insert(key, leaf->right);
+			Insert(key, leaf->right);
 		else
 		{
 			leaf->right = new Node<T>;
@@ -91,7 +91,7 @@ template<class T>
 void Tree<T>::Insert(T key)
 {
 	if (root != nullptr)
-		insert(key, root);
+		Insert(key, root);
 	else
 	{
 		root = new Node<T>;
@@ -109,9 +109,9 @@ Node<T>* Tree<T>::Search(T key, Node<T>* leaf)
 		if (key == leaf->value)
 			cout << "Found!\n";
 		if (key < leaf->value)
-			return search(key, leaf->left);
+			return Search(key, leaf->left);
 		else
-			return search(key, leaf->right);
+			return Search(key, leaf->right);
 	}
 	else
 		return nullptr;
@@ -120,19 +120,19 @@ Node<T>* Tree<T>::Search(T key, Node<T>* leaf)
 template<class T>
 Node<T>* Tree<T>::Search(T key)
 {
-	return search(key, root);
+	return Search(key, root);
 }
 
 template<class T>
 void Tree<T>::DestroyTree()
 {
-	destroy_tree(root);
+	DestroyTree(root);
 }
 
 template<class T>
 void Tree<T>::IncorderPrint()
 {
-	inorder_print(root);
+	IncorderPrint(root);
 	cout << "\n";
 }
 
@@ -141,16 +141,16 @@ void Tree<T>::IncorderPrint(Node<T>* leaf)
 {
 	if (leaf != nullptr)
 	{
-		inorder_print(leaf->left);
+		IncorderPrint(leaf->left);
 		cout << leaf->value << ",";
-		inorder_print(leaf->right);
+		IncorderPrint(leaf->right);
 	}
 }
 
 template<class T>
 void Tree<T>::PostorderPrint()
 {
-	postorder_print(root);
+	IncorderPrint(root);
 	cout << "\n";
 }
 
@@ -159,8 +159,8 @@ void Tree<T>::PostorderPrint(Node<T>* leaf)
 {
 	if (leaf != nullptr)
 	{
-		inorder_print(leaf->left);
-		inorder_print(leaf->right);
+		IncorderPrint(leaf->left);
+		IncorderPrint(leaf->right);
 		cout << leaf->value << ",";
 	}
 }
@@ -168,7 +168,7 @@ void Tree<T>::PostorderPrint(Node<T>* leaf)
 template<class T>
 void Tree<T>::PreorderPrint()
 {
-	preorder_print(root);
+	PreorderPrint(root);
 	cout << "\n";
 }
 
@@ -178,8 +178,8 @@ void Tree<T>::PreorderPrint(Node<T>* leaf)
 	if (leaf != nullptr)
 	{
 		cout << leaf->value << ",";
-		inorder_print(leaf->left);
-		inorder_print(leaf->right);
+		IncorderPrint(leaf->left);
+		IncorderPrint(leaf->right);
 	}
 }
 
