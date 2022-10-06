@@ -60,7 +60,6 @@ void Tree<T>::DestroyTree(Node<T>* leaf)
 template<class T>
 void Tree<T>::Insert(T key, Node<T>* leaf)
 {
-
 	if (key < leaf->value)
 	{
 		if (leaf->left != nullptr)
